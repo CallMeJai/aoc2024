@@ -2,3 +2,4 @@ Cargo.lock
 target/
 debug/
 **/*.rs.bk
+*.log
