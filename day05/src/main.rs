@@ -1,10 +1,13 @@
 use std::collections::HashMap;
 use std::collections::HashSet;
+use std::cmp::Ordering;
 
 fn main() {
     let input = include_str!("../rsrc/input.txt");
     let result = part_1(input);
     println!("part 1: {result}");
+    let result = part_2(input);
+    println!("part 2: {result}");
 }
 
 type PageNumber = usize;
@@ -63,6 +66,34 @@ fn part_1(input: &str) -> usize {
     result
 }
 
+fn correct_order(update: &mut Vec<PageNumber>, rules: &HashMap<PageNumber, HashSet<PageNumber>>) {
+    update.sort_by(|a, b| {
+        if rules.get(a).is_some_and(|x| x.contains(b)) {
+            Ordering::Less
+        } else if rules.get(b).is_some_and(|x| x.contains(a)) {
+            Ordering::Greater
+        } else {
+            Ordering::Equal
+        }
+    });
+}
+
+fn part_2(input: &str) -> usize {
+    let mut result = 0;
+    let (rules, updates) = parse_input(input).unwrap();
+    let mut updates_to_reorder: Vec<Vec<PageNumber>> = Vec::new();
+    for update in updates.into_iter() {
+        if breaks_rules(&update, &rules) {
+            updates_to_reorder.push(update);
+        }
+    }
+    for mut update in updates_to_reorder.into_iter() {
+        correct_order(&mut update, &rules);
+        result += update[update.len() / 2];
+    }
+    result
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -71,5 +102,12 @@ mod tests {
         let input = include_str!("../rsrc/test.txt");
         let result = part_1(input);
         assert_eq!(result, 143);
+    }
+
+    #[test]
+    fn day_05_part_2_test() {
+        let input = include_str!("../rsrc/test.txt");
+        let result = part_2(input);
+        assert_eq!(result, 123);
     }
 }
