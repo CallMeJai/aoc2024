@@ -1,7 +1,6 @@
 [package]
-name = "day04"
+name = "aoc_utils"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-aoc_utils = { path = "../aoc_utils"}
