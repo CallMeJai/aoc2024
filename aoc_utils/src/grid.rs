@@ -6,7 +6,7 @@ use std::fmt::{Formatter, Display};
 use crate::grid::Direction::*;
 use crate::grid::RelativeDirection::*;
 
-#[derive(Clone)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum Direction {
     North,
     South,
@@ -18,6 +18,7 @@ pub enum Direction {
     Southwest,
 }
 
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum RelativeDirection {
     Right,
     Left,
@@ -91,7 +92,7 @@ impl Neg for &Direction {
     }
 }
 
-#[derive(Clone)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct Position {
     pub x: usize,
     pub y: usize,
